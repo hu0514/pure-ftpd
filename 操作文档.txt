@@ -1,0 +1,37 @@
+docker run -d \
+    --name pure-ftpd \
+    --hostname=pure-ftpd \
+    --network=host \
+    --restart always \
+    -v /data/usr-data/pure-ftpd:/data/usr-data/pure-ftpd \
+    -v /data/usr-data:/data/usr-data \
+    -v /etc/timezone:/etc/timezone \
+    -v /etc/localtime:/etc/localtime \
+    stilliard/pure-ftpd:hardened \
+    bash /run.sh -c 30 -C 10 -l puredb:/data/usr-data/pure-ftpd/pureftpd.pdb -E -R -P 0.0.0.0 -S 40001 -p 30000:30060
+
+#登陆容器
+docker exec -it pure-ftpd bash
+# 添加用户
+pure-pw useradd club -f /data/usr-data/pure-ftpd/pureftpd.passwd -u 1000 -g 1000 -d /data/usr-data/wwwroot
+pure-pw mkdb /data/usr-data/pure-ftpd/pureftpd.pdb -f /data/usr-data/pure-ftpd/pureftpd.passwd
+
+# 修改用户
+pure-pw usermod club -f /data/usr-data/pure-ftpd/pureftpd.passwd -d /home/ftpusers
+pure-pw mkdb /data/usr-data/pure-ftpd/pureftpd.pdb -f /data/usr-data/pure-ftpd/pureftpd.passwd
+
+# 修改用户密码
+pure-pw passwd club -f /data/usr-data/pure-ftpd/pureftpd.passwd
+pure-pw mkdb /data/usr-data/pure-ftpd/pureftpd.pdb -f /data/usr-data/pure-ftpd/pureftpd.passwd
+
+# 删除用户
+pure-pw userdel club -f /data/usr-data/pure-ftpd/pureftpd.passwd
+pure-pw mkdb /data/usr-data/pure-ftpd/pureftpd.pdb -f /data/usr-data/pure-ftpd/pureftpd.passwd
+
+# 用户列表
+pure-pw list -f /data/usr-data/pure-ftpd/pureftpd.passwd
+
+# 用户信息
+pure-pw show club -f /data/usr-data/pure-ftpd/pureftpd.passwd
+
+#端口40001
