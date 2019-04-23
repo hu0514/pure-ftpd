@@ -35,3 +35,6 @@ pure-pw list -f /data/usr-data/pure-ftpd/pureftpd.passwd
 pure-pw show club -f /data/usr-data/pure-ftpd/pureftpd.passwd
 
 #端口40001
+
+#防火墙开闭端口
+40001 30000-30060
