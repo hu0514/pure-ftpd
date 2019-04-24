@@ -38,3 +38,6 @@ pure-pw show club -f /data/usr-data/pure-ftpd/pureftpd.passwd
 
 #防火墙开闭端口
 40001 30000-30060
+
+#配置目录权限
+chown -R ftpuser:fptgroup ***
