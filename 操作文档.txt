@@ -41,3 +41,12 @@ pure-pw show club -f /data/usr-data/pure-ftpd/pureftpd.passwd
 
 #配置目录权限
 chown -R ftpuser:fptgroup ***
+
+
+报错
+1、服务器发回了不可路由的地址，使用服务器地址代替
+修改pure-ftpd 配置文件
+去掉ForcePassiveIP前面的注释符号，并把后面的IP地址修改为服务器的外网IP地址，保存配置后重载配置或者重启服务生效
+
+2、读取目录列表失败
+开放防火墙对应的端口
